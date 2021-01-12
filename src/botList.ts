@@ -1,4 +1,4 @@
-exports.botList = [
+export default [
   'anotherttvviewer',
   'aten',
   'letsdothis_music',

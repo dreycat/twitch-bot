@@ -1,17 +1,11 @@
-require('dotenv').config();
-const WebSocket = require('ws');
+import WebSocket from 'ws';
+import dotenv from 'dotenv';
 
-const Postman = require('./Postman');
-const { config } = require('./config');
+dotenv.config();
 
-const {
-  makeMessage,
-  parseUsername,
-  isJoinMessage,
-  isNotSelf,
-  isRealUser,
-  partial,
-} = require('./utils');
+import Postman from './Postman';
+import config from './config';
+import { makeMessage, parseUsername, isJoinMessage, isNotSelf, isRealUser, partial } from './utils';
 
 const { channel, username, password, URL } = config.twitch;
 
@@ -31,7 +25,7 @@ ws.on('close', () => {
   console.log('Disconnected');
 });
 
-ws.on('message', (message) => {
+ws.on('message', (message: string) => {
   if (!config.isProduction) {
     console.log('>>>', message);
   }

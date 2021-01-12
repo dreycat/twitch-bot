@@ -1,12 +1,14 @@
-class Postman {
+import type WebSocket from 'ws';
+
+export default class Postman {
   #ms = 0;
   #ws;
 
-  constructor(ws) {
+  constructor(ws: WebSocket) {
     this.#ws = ws;
   }
 
-  send(message) {
+  send(message: string) {
     const step = 3000;
     setTimeout(() => {
       this.#ms -= step;
@@ -15,5 +17,3 @@ class Postman {
     this.#ms += step;
   }
 }
-
-module.exports = Postman;
