@@ -5,4 +5,5 @@ export default [
   'nuclearpigeons',
   'violets_tv',
   'kernel_trap',
+  'nightbot',
 ];

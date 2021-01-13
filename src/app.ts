@@ -3,9 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import Postman from './Postman';
 import config from './config';
-import { makeMessage, parseUsername, isJoinMessage, isNotSelf, isRealUser, partial } from './utils';
+import Postman from './Postman';
+import {
+  makeMessage,
+  parseUsername,
+  isJoinMessage,
+  isNotSelf,
+  isRealUser,
+  partial,
+} from './utils';
 
 const { channel, username, password, URL } = config.twitch;
 
@@ -46,6 +53,6 @@ ws.on('message', (message: string) => {
       .filter(isNotSelf)
       .filter(isRealUser)
       .map(partial(makeMessage, channel))
-      .forEach((msg) => postman.send(msg));
+      .forEach(postman.send);
   }
 });
