@@ -53,6 +53,6 @@ ws.on('message', (message: string) => {
       .filter(isNotSelf)
       .filter(isRealUser)
       .map(partial(makeMessage, channel))
-      .forEach(postman.send);
+      .forEach(msg => postman.send(msg));
   }
 });

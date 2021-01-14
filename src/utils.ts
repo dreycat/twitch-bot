@@ -2,6 +2,7 @@ import cars from './cars';
 import botList from './botList';
 import config from './config';
 import { Callback } from './types';
+import { сarMapper } from './carMapper';
 
 const getRandomIntInclusive = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -9,12 +10,15 @@ const getRandomIntInclusive = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getRandomItem = (items: any[]) => {
+const getRandomItem = (items: readonly any[]) => {
   return items[getRandomIntInclusive(0, items.length - 1)];
 };
 
 export const makeMessage = (channel: string, username: string) => {
-  const message = `К нам подъехал @${username} на ${getRandomItem(cars)}`;
+  const car = сarMapper.hasOwnProperty(username)
+    ? сarMapper[username]
+    : getRandomItem(cars);
+  const message = `К нам подъехал @${username} на ${car}`;
   return `PRIVMSG #${channel} :${message}`;
 };
 
