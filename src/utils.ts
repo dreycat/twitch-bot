@@ -10,14 +10,12 @@ const getRandomIntInclusive = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getRandomItem = (items: readonly any[]) => {
+export const getRandomItem = (items: readonly any[]) => {
   return items[getRandomIntInclusive(0, items.length - 1)];
 };
 
 export const makeMessage = (channel: string, username: string) => {
-  const car = сarMapper.hasOwnProperty(username)
-    ? сarMapper[username]
-    : getRandomItem(cars);
+  const car = сarMapper?.[username] ?? getRandomItem(cars);
   const message = `К нам подъехал @${username} на ${car}`;
   return `PRIVMSG #${channel} :${message}`;
 };

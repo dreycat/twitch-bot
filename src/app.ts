@@ -1,8 +1,3 @@
-import WebSocket from 'ws';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 import config from './config';
 import Postman from './Postman';
 import {
@@ -18,9 +13,9 @@ const { channel, username, password, URL } = config.twitch;
 
 const ws = new WebSocket(URL);
 
-const postman = new Postman(ws);
+const postman = new Postman();
 
-ws.on('open', () => {
+ws.addEventListener('open', () => {
   console.log('Connected');
   ws.send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership');
   ws.send(`PASS ${password}`);
@@ -28,11 +23,9 @@ ws.on('open', () => {
   ws.send(`JOIN #${channel}`);
 });
 
-ws.on('close', () => {
-  console.log('Disconnected');
-});
+ws.addEventListener('message', event => {
+  const message = event.data as string;
 
-ws.on('message', (message: string) => {
   if (!config.isProduction) {
     console.log('>>>', message);
   }
@@ -55,4 +48,13 @@ ws.on('message', (message: string) => {
       .map(partial(makeMessage, channel))
       .forEach(msg => postman.send(msg));
   }
+});
+
+ws.addEventListener('close', () => {
+  console.log('Disconnected');
+});
+
+ws.addEventListener('error', error => {
+  console.error(error);
+  ws.close();
 });

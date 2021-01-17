@@ -1,0 +1,2 @@
+tests/__data/**/*.ts
+tests/**/*.ts

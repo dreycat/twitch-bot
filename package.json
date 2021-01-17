@@ -1,34 +1,30 @@
 {
-  "name": "alt_bot",
+  "name": "twitch_bot",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/app",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"TS,Node\" -c \"cyan,green\" \"npm run watch:ts\" \"npm run watch:node\"",
-    "dev:ts": "ts-node src/app",
-    "watch:ts": "tsc -w",
-    "watch:node": "NODE_ENV=development nodemon dist/app.js",
-    "build-ts": "tsc"
+    "dev": "parcel src/index.html",
+    "build": "npm run clean && npm run build-dist",
+    "build-dist": "parcel build src/index.html",
+    "test": "jest",
+    "clean": "rm -rf dist/*"
   },
   "author": "",
   "license": "ISC",
   "keywords": [],
   "description": "",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "ws": "^7.4.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/ws": "^7.4.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.21",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
-    "concurrently": "^5.3.0",
     "eslint": "^7.17.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
-    "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1",
+    "jest": "^26.6.3",
+    "parcel-bundler": "^1.12.4",
+    "ts-jest": "^26.4.4",
     "typescript": "^4.1.3"
   }
 }
