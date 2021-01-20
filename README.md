@@ -23,7 +23,25 @@ $ npm run dev
 Build:
 
 ```bash
-$ npm run dev
+$ npm run build
 ```
 
-Optionally add png images to static/images
+Start server:
+
+```bash
+$ npx serve -s ./dist -l 1234
+```
+
+or use dev server
+
+Obs setting:
+
+Click the ‘+’ or right mouse click to add a new source. Choose ‘Browser’ from the list. You need to change URL.
+
+```
+http://localhost:1234
+```
+
+If you need more images:
+
+Add png images to static/images
