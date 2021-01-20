@@ -25,10 +25,16 @@ body {
 .username {
   display: block;
   position: relative;
-  color: #fff;
-  font-size: 56px;
   margin: 0;
   padding: 0 8px;
+  font-family: 'PT Serif', serif;
+  font-weight: 700;
+  line-height: 1;
+  font-size: 56px;
+  color: #faff00;
+  letter-spacing: 4px;
+  text-shadow: 3px 3px #733434;
+  text-transform: uppercase;
   animation: animate-content 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) both;
 }
 
@@ -50,7 +56,7 @@ body {
   transform: scaleX(0);
   transform-origin: left top;
   backface-visibility: hidden;
-  background: #c7c7c7;
+  background: #faff00;
   visibility: visible;
   animation: animate-panel 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) both;
 }
