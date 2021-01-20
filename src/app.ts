@@ -1,19 +1,21 @@
 import config from './config';
-import Postman from './Postman';
+import { SlowEventBus } from './lib/SlowEventBus';
+import { Notification } from './Notification';
 import {
-  makeMessage,
   parseUsername,
   isJoinMessage,
   isNotSelf,
   isRealUser,
   partial,
-} from './utils';
+} from './lib/utils';
 
 const { channel, username, password, URL } = config.twitch;
 
+const bus = new SlowEventBus(5000);
+const notification = new Notification('#app', 3000);
 const ws = new WebSocket(URL);
 
-const postman = new Postman();
+bus.on('JOIN', notification.show);
 
 ws.addEventListener('open', () => {
   console.log('Connected');
@@ -45,8 +47,7 @@ ws.addEventListener('message', event => {
       .map(parseUsername)
       .filter(isNotSelf)
       .filter(isRealUser)
-      .map(partial(makeMessage, channel))
-      .forEach(msg => postman.send(msg));
+      .forEach(username => bus.emit('JOIN', username));
   }
 });
 

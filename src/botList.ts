@@ -18,4 +18,5 @@ export default [
   'jointeffortt',
   'nelsondock',
   'threebibl',
+  'carbot14xyz',
 ];

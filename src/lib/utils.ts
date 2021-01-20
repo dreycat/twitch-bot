@@ -1,8 +1,8 @@
-import cars from './cars';
-import botList from './botList';
-import config from './config';
+import cars from '../cars';
+import botList from '../botList';
+import config from '../config';
 import { Callback } from './types';
-import { сarMapper } from './carMapper';
+import { сarMapper } from '../carMapper';
 
 const getRandomIntInclusive = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -10,14 +10,21 @@ const getRandomIntInclusive = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const getRandomItem = (items: readonly any[]) => {
+export const getRandomItem = <T>(items: readonly T[]): T => {
   return items[getRandomIntInclusive(0, items.length - 1)];
 };
 
-export const makeMessage = (channel: string, username: string) => {
+export const makeMessage = (username: string) => {
   const car = сarMapper?.[username] ?? getRandomItem(cars);
   const message = `К нам подъехал @${username} на ${car}`;
-  return `PRIVMSG #${channel} :${message}`;
+  return message;
+};
+
+export const speak = (message: string) => {
+  if (!window.speechSynthesis) return;
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.lang = 'ru-RU';
+  speechSynthesis.speak(utterance);
 };
 
 export const partial = (fn: Callback, ...args: any[]) => (...rest: any[]) => {
