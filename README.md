@@ -14,6 +14,10 @@ Install dependencies:
 $ npm install
 ```
 
+Environment variables:
+
+rename .env.example to .env
+
 Start dev server:
 
 ```bash
