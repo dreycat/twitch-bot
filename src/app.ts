@@ -11,9 +11,9 @@ import {
 
 const { channel, username, password, URL } = config.twitch;
 
+const ws = new WebSocket(URL);
 const bus = new SlowEventBus(5000);
 const notification = new Notification('#app', 3000);
-const ws = new WebSocket(URL);
 
 bus.on('JOIN', notification.show);
 
