@@ -29,3 +29,14 @@ export const isNotSelf = (username: string) => {
 };
 
 export const isRealUser = (username: string) => !botList.includes(username);
+
+export const createUniqueJoinHandler = () => {
+  const users = new Set();
+  return (username: string) => {
+    const hasBeen = users.has(username);
+    if (!hasBeen) {
+      users.add(username);
+    }
+    return !hasBeen;
+  };
+};

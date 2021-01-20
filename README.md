@@ -16,7 +16,9 @@ $ npm install
 
 Environment variables:
 
+```
 rename .env.example to .env
+```
 
 Start dev server:
 
@@ -38,7 +40,7 @@ $ npx serve -s ./dist -l 1234
 
 or use dev server
 
-Obs setting:
+Obs settings:
 
 Click the ‘+’ or right mouse click to add a new source. Choose ‘Browser’ from the list. You need to change URL.
 
