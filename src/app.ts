@@ -2,7 +2,7 @@ import config from './config';
 import { SlowEventBus } from './lib/SlowEventBus';
 import { Notification } from './Notification';
 
-import { parser, getConnectedUsers } from './parser';
+import { parser } from './parser';
 
 const { channel, username, password, URL } = config.twitch;
 
@@ -36,9 +36,7 @@ const connect = () => {
         ws.send('PONG');
         break;
       case 'JOIN':
-        getConnectedUsers(msg.raw).forEach(username =>
-          bus.emit('JOIN', username),
-        );
+        msg.users.forEach(username => bus.emit('JOIN', username));
         break;
     }
   });

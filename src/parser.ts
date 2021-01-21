@@ -3,9 +3,6 @@ import config from './config';
 
 const { channel } = config.twitch;
 
-type Commands = 'JOIN' | 'PRIVMSG' | 'PING' | 'UNKNOWN';
-type Message = { type: Commands; raw: string };
-
 const isJoinMessage = (message: string) => {
   return message.includes(`JOIN #${channel}`);
 };
@@ -28,7 +25,7 @@ const isNotSelf = (username: string) => {
 
 const isRealUser = (username: string) => !botList.includes(username);
 
-const createUniqueJoinHandler = () => {
+const isUniqueJoin = () => {
   const users = new Set();
   return (username: string) => {
     const hasBeen = users.has(username);
@@ -39,12 +36,51 @@ const createUniqueJoinHandler = () => {
   };
 };
 
-const parser = (message: string): Message => {
+const getConnectedUsers = (message: string) => {
+  return message
+    .trim()
+    .split('\r\n')
+    .filter(isJoinMessage)
+    .map(parseUsername)
+    .filter(isNotSelf)
+    .filter(isRealUser)
+    .filter(isUniqueJoin());
+};
+
+type JoinMessage = {
+  type: 'JOIN';
+  raw: string;
+  users: string[];
+};
+
+type PrivateMessage = {
+  type: 'PRIVMSG';
+  raw: string;
+};
+
+type PingMessage = {
+  type: 'PING';
+  raw: string;
+};
+
+type UnknownMessage = {
+  type: 'UNKNOWN';
+  raw: string;
+};
+
+type ParsedMessage =
+  | JoinMessage
+  | PrivateMessage
+  | PingMessage
+  | UnknownMessage;
+
+const parser = (message: string): ParsedMessage => {
   switch (true) {
     case isJoinMessage(message):
       return {
         type: 'JOIN',
         raw: message,
+        users: getConnectedUsers(message),
       };
     case isPrivateMessage(message):
       return {
@@ -64,27 +100,14 @@ const parser = (message: string): Message => {
   }
 };
 
-const isUniqueJoin = createUniqueJoinHandler();
-
-const getConnectedUsers = (message: string) => {
-  return message
-    .trim()
-    .split('\r\n')
-    .filter(isJoinMessage)
-    .map(parseUsername)
-    .filter(isNotSelf)
-    .filter(isRealUser)
-    .filter(isUniqueJoin);
-};
-
 export {
   parser,
   parseUsername,
   getConnectedUsers,
   isNotSelf,
   isRealUser,
+  isUniqueJoin,
   isPingMessage,
   isJoinMessage,
   isPrivateMessage,
-  createUniqueJoinHandler,
 };
