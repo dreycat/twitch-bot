@@ -19,7 +19,14 @@ export class Notification {
 
   private destroy() {
     setTimeout(() => {
-      this.root.innerHTML = '';
+      const container = document.querySelector('.container') as Element;
+      const listener = () => {
+        container.classList.remove('slide-out');
+        container.removeEventListener('animationend', listener);
+        this.root.innerHTML = '';
+      };
+      container.addEventListener('animationend', listener);
+      container.classList.add('slide-out');
     }, this.lifetime);
   }
 
