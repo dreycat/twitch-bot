@@ -3,12 +3,13 @@ import { SlowEventBus } from './lib/SlowEventBus';
 import { Notification } from './Notification';
 import {
   parseUsername,
-  isJoinMessage,
   isNotSelf,
   isRealUser,
   partial,
   createUniqueJoinHandler,
 } from './lib/utils';
+
+import { parser, isJoinMessage } from './parser';
 
 const { channel, username, password, URL } = config.twitch;
 
@@ -30,29 +31,31 @@ const connect = () => {
   });
 
   ws.addEventListener('message', event => {
-    const message = event.data as string;
+    const data = event.data as string;
 
     if (!config.isProduction) {
-      console.log('>>>', message);
+      console.log('>>>', data);
     }
 
-    if (message.includes('PRIVMSG')) return;
+    const message = parser(data);
 
-    if (message.includes('PING')) {
-      ws.send('PONG');
-      return;
-    }
-
-    if (isJoinMessage(channel, message)) {
-      message
-        .trim()
-        .split('\r\n')
-        .filter(partial(isJoinMessage, channel))
-        .map(parseUsername)
-        .filter(isNotSelf)
-        .filter(isRealUser)
-        .filter(isUniqueJoin)
-        .forEach(username => bus.emit('JOIN', username));
+    switch (message.type) {
+      case 'PING': {
+        ws.send('PONG');
+        break;
+      }
+      case 'JOIN': {
+        message.raw
+          .trim()
+          .split('\r\n')
+          .filter(partial(isJoinMessage, channel))
+          .map(parseUsername)
+          .filter(isNotSelf)
+          .filter(isRealUser)
+          .filter(isUniqueJoin)
+          .forEach(username => bus.emit('JOIN', username));
+        break;
+      }
     }
   });
 

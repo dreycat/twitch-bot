@@ -20,10 +20,6 @@ export const parseUsername = (message: string) => {
   return message.trim().substring(1, message.indexOf('!'));
 };
 
-export const isJoinMessage = (channel: string, message: string) => {
-  return message.includes(`JOIN #${channel}`);
-};
-
 export const isNotSelf = (username: string) => {
   return username !== config.twitch.username;
 };

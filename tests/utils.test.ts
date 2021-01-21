@@ -1,4 +1,4 @@
-import { isJoinMessage } from '../src/lib/utils';
+import { isJoinMessage } from '../src/parser';
 import { joinAndPartMessage } from './__data/messages';
 import config from '../src/config';
 const { channel } = config.twitch;
