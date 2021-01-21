@@ -1,5 +1,3 @@
-import { Callback } from './types';
-
 export class EventEmitter {
   private readonly events = new Map<string, Set<Callback>>();
   protected readonly eventLimit = 100;

@@ -1,21 +1,13 @@
 import config from './config';
 import { SlowEventBus } from './lib/SlowEventBus';
 import { Notification } from './Notification';
-import {
-  parseUsername,
-  isNotSelf,
-  isRealUser,
-  partial,
-  createUniqueJoinHandler,
-} from './lib/utils';
 
-import { parser, isJoinMessage } from './parser';
+import { parser, getConnectedUsers } from './parser';
 
 const { channel, username, password, URL } = config.twitch;
 
 const bus = new SlowEventBus(5000);
 const notification = new Notification('#app', 3000);
-const isUniqueJoin = createUniqueJoinHandler();
 
 bus.on('JOIN', notification.show);
 
@@ -37,25 +29,17 @@ const connect = () => {
       console.log('>>>', data);
     }
 
-    const message = parser(data);
+    const msg = parser(data);
 
-    switch (message.type) {
-      case 'PING': {
+    switch (msg.type) {
+      case 'PING':
         ws.send('PONG');
         break;
-      }
-      case 'JOIN': {
-        message.raw
-          .trim()
-          .split('\r\n')
-          .filter(partial(isJoinMessage, channel))
-          .map(parseUsername)
-          .filter(isNotSelf)
-          .filter(isRealUser)
-          .filter(isUniqueJoin)
-          .forEach(username => bus.emit('JOIN', username));
+      case 'JOIN':
+        getConnectedUsers(msg.raw).forEach(username =>
+          bus.emit('JOIN', username),
+        );
         break;
-      }
     }
   });
 

@@ -1,3 +1,4 @@
+import botList from './botList';
 import config from './config';
 
 const { channel } = config.twitch;
@@ -5,39 +6,85 @@ const { channel } = config.twitch;
 type Commands = 'JOIN' | 'PRIVMSG' | 'PING' | 'UNKNOWN';
 type Message = { type: Commands; raw: string };
 
-export const isJoinMessage = (channel: string, message: string) => {
+const isJoinMessage = (message: string) => {
   return message.includes(`JOIN #${channel}`);
 };
 
-export const isPrivateMessage = (channel: string, message: string) => {
+const isPrivateMessage = (message: string) => {
   return message.includes(`PRIVMSG #${channel}`);
 };
 
-export const isPingMessage = (message: string) => {
+const isPingMessage = (message: string) => {
   return message.includes('PING :tmi.twitch.tv');
 };
 
-export const parser = (data: string): Message => {
+const parseUsername = (message: string) => {
+  return message.trim().substring(1, message.indexOf('!'));
+};
+
+const isNotSelf = (username: string) => {
+  return username !== config.twitch.username;
+};
+
+const isRealUser = (username: string) => !botList.includes(username);
+
+const createUniqueJoinHandler = () => {
+  const users = new Set();
+  return (username: string) => {
+    const hasBeen = users.has(username);
+    if (!hasBeen) {
+      users.add(username);
+    }
+    return !hasBeen;
+  };
+};
+
+const parser = (message: string): Message => {
   switch (true) {
-    case isJoinMessage(channel, data):
+    case isJoinMessage(message):
       return {
         type: 'JOIN',
-        raw: data,
+        raw: message,
       };
-    case isPrivateMessage(channel, data):
+    case isPrivateMessage(message):
       return {
         type: 'PRIVMSG',
-        raw: data,
+        raw: message,
       };
-    case isPingMessage(data):
+    case isPingMessage(message):
       return {
         type: 'PING',
-        raw: data,
+        raw: message,
       };
     default:
       return {
         type: 'UNKNOWN',
-        raw: data,
+        raw: message,
       };
   }
+};
+
+const isUniqueJoin = createUniqueJoinHandler();
+
+const getConnectedUsers = (message: string) => {
+  return message
+    .trim()
+    .split('\r\n')
+    .filter(isJoinMessage)
+    .map(parseUsername)
+    .filter(isNotSelf)
+    .filter(isRealUser)
+    .filter(isUniqueJoin);
+};
+
+export {
+  parser,
+  parseUsername,
+  getConnectedUsers,
+  isNotSelf,
+  isRealUser,
+  isPingMessage,
+  isJoinMessage,
+  isPrivateMessage,
+  createUniqueJoinHandler,
 };
