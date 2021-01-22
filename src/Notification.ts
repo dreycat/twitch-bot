@@ -14,19 +14,17 @@ export class Notification {
   show(username: string) {
     const randomCarSrc = getRandomItem(Object.values(carPictures));
     this.render(username, randomCarSrc);
-    this.destroy();
   }
 
-  private destroy() {
+  private destroy(containerEl: HTMLDivElement) {
     setTimeout(() => {
-      const container = document.querySelector('.container') as Element;
       const listener = () => {
-        container.classList.remove('slide-out');
-        container.removeEventListener('animationend', listener);
-        this.root.innerHTML = '';
+        containerEl.classList.remove('slide-out');
+        containerEl.removeEventListener('animationend', listener);
+        containerEl.remove();
       };
-      container.addEventListener('animationend', listener);
-      container.classList.add('slide-out');
+      containerEl.addEventListener('animationend', listener);
+      containerEl.classList.add('slide-out');
     }, this.lifetime);
   }
 
@@ -42,8 +40,9 @@ export class Notification {
     usernameEl.textContent = username;
     carEl.src = carSrc;
 
-    containerEl.appendChild(carEl);
-    containerEl.appendChild(usernameEl);
-    this.root.appendChild(containerEl);
+    containerEl.append(carEl);
+    containerEl.append(usernameEl);
+    this.root.append(containerEl);
+    this.destroy(containerEl);
   }
 }
