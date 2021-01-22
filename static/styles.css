@@ -41,7 +41,7 @@ body {
 }
 
 .car {
-  height: 200px;
+  height: 280px;
   width: auto;
   margin-bottom: 24px;
   animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

@@ -6,8 +6,8 @@ import { parser } from './parser';
 
 const { channel, username, password, URL } = config.twitch;
 
-const bus = new SlowEventBus(5000);
-const notification = new Notification('#app', 3000);
+const bus = new SlowEventBus(10000);
+const notification = new Notification('#app', 4000);
 
 bus.on('JOIN', notification.show);
 
