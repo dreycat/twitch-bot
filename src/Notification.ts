@@ -8,7 +8,6 @@ export class Notification {
 
   constructor(selector: string, private readonly lifetime: number) {
     this.root = document.querySelector(selector) as Element;
-    this.show = this.show.bind(this);
   }
 
   show(username: string) {

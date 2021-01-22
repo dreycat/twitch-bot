@@ -9,7 +9,7 @@ const { channel, username, password, URL } = config.twitch;
 const bus = new SlowEventBus(10000);
 const notification = new Notification('#app', 4000);
 
-bus.on('JOIN', notification.show);
+bus.on('JOIN', username => notification.show(username));
 
 const connect = () => {
   const ws = new WebSocket(URL);
