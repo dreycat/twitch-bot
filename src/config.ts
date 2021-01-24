@@ -6,4 +6,6 @@ export default {
     URL: process.env.TWITCH_URL as string,
   },
   isProduction: process.env.NODE_ENV === 'production',
+  notificationLifetime: 4000,
+  delay: 10000,
 };

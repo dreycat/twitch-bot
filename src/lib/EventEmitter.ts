@@ -15,7 +15,7 @@ export class EventEmitter {
 
   emit(name: string, ...props: any[]) {
     const event = this.events.get(name);
-    if (!event) throw new Error('event name not found');
+    if (!event) return;
     for (const fn of event.values()) {
       fn(...props);
     }
