@@ -25,7 +25,7 @@ const isNotSelf = (username: string) => {
 
 const isRealUser = (username: string) => !botList.includes(username);
 
-const isUniqueJoin = () => {
+const uniqueJoinHandler = () => {
   const users = new Set();
   return (username: string) => {
     const hasBeen = users.has(username);
@@ -36,6 +36,8 @@ const isUniqueJoin = () => {
   };
 };
 
+const isUniqueJoin = uniqueJoinHandler();
+
 const getConnectedUsers = (message: string) => {
   return message
     .trim()
@@ -44,7 +46,7 @@ const getConnectedUsers = (message: string) => {
     .map(parseUsername)
     .filter(isNotSelf)
     .filter(isRealUser)
-    .filter(isUniqueJoin());
+    .filter(isUniqueJoin);
 };
 
 type JoinMessage = {
