@@ -20,4 +20,8 @@ export class EventEmitter {
       fn(...props);
     }
   }
+
+  pipe(name: string, eventEmitter: EventEmitter) {
+    this.on(name, (...props) => eventEmitter.emit(name, ...props));
+  }
 }

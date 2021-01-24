@@ -8,4 +8,4 @@ const notification = new Notification('#app', config.notificationLifetime);
 const chat = new Chat();
 
 slowBus.on('JOIN', username => notification.show(username));
-chat.on('JOIN', username => slowBus.emit('JOIN', username));
+chat.pipe('JOIN', slowBus);
