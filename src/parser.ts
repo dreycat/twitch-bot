@@ -8,11 +8,11 @@ const isPrivateMessage = (message: string) => {
 };
 
 const isJoinMessage = (message: string) => {
-  return message.includes(`JOIN #${channel}`) && !isPrivateMessage(message);
+  return !isPrivateMessage(message) && message.includes(`JOIN #${channel}`);
 };
 
 const isPingMessage = (message: string) => {
-  return message.includes('PING :tmi.twitch.tv');
+  return message.trim() === 'PING :tmi.twitch.tv';
 };
 
 const parseUsername = (message: string) => {
