@@ -13,15 +13,15 @@ export class EventEmitter {
     }
   }
 
-  emit(name: string, ...props: any[]) {
+  emit(name: string, ...xs: any[]) {
     const event = this.events.get(name);
     if (!event) return;
     for (const fn of event.values()) {
-      fn(...props);
+      fn(...xs);
     }
   }
 
   pipe(name: string, eventEmitter: EventEmitter) {
-    this.on(name, (...props) => eventEmitter.emit(name, ...props));
+    this.on(name, (...xs) => eventEmitter.emit(name, ...xs));
   }
 }

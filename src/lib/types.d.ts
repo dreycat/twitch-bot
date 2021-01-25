@@ -1,1 +1,1 @@
-type Callback = (...props: any[]) => any;
+type Callback = (...xs: any[]) => any;

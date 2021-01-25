@@ -78,16 +78,16 @@ type ParsedMessage =
 
 const parser = (message: string): ParsedMessage => {
   switch (true) {
+    case isPrivateMessage(message):
+      return {
+        type: 'PRIVMSG',
+        raw: message,
+      };
     case isJoinMessage(message):
       return {
         type: 'JOIN',
         raw: message,
         users: getConnectedUsers(message),
-      };
-    case isPrivateMessage(message):
-      return {
-        type: 'PRIVMSG',
-        raw: message,
       };
     case isPingMessage(message):
       return {

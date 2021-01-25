@@ -7,10 +7,10 @@ export class SlowEventBus extends EventEmitter {
     super();
   }
 
-  emit(name: string, ...props: any[]) {
+  emit(name: string, ...xs: any[]) {
     setTimeout(() => {
       this.time -= this.delay;
-      super.emit(name, ...props);
+      super.emit(name, ...xs);
     }, this.time);
     this.time += this.delay;
   }

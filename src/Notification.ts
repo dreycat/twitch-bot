@@ -4,10 +4,10 @@ import { getRandomItem } from './lib/utils';
 const carPictures = (images as unknown) as Record<string, string>;
 
 export class Notification {
-  private readonly root;
+  private readonly rootEl;
 
   constructor(selector: string, private readonly lifetime: number) {
-    this.root = document.querySelector(selector) as Element;
+    this.rootEl = document.querySelector(selector) as Element;
   }
 
   show(username: string) {
@@ -41,7 +41,7 @@ export class Notification {
 
     containerEl.append(carEl);
     containerEl.append(usernameEl);
-    this.root.append(containerEl);
+    this.rootEl.append(containerEl);
     this.destroy(containerEl);
   }
 }

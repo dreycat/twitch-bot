@@ -7,5 +7,5 @@ export default {
   },
   isProduction: process.env.NODE_ENV === 'production',
   notificationLifetime: 4000,
-  delay: 10000,
+  busDelay: 10000,
 };
