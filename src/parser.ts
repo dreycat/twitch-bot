@@ -3,12 +3,12 @@ import config from './config';
 
 const { channel } = config.twitch;
 
-const isJoinMessage = (message: string) => {
-  return message.includes(`JOIN #${channel}`);
-};
-
 const isPrivateMessage = (message: string) => {
   return message.includes(`PRIVMSG #${channel}`);
+};
+
+const isJoinMessage = (message: string) => {
+  return message.includes(`JOIN #${channel}`) && !isPrivateMessage(message);
 };
 
 const isPingMessage = (message: string) => {
