@@ -94,7 +94,6 @@ export {
   getConnectedUsers,
   isNotSelf,
   isRealUser,
-  isUniqueJoin,
   isPingMessage,
   isJoinMessage,
   isPrivateMessage,
